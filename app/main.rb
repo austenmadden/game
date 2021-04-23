@@ -1,18 +1,19 @@
+require "app/sprite.rb"
+require "app/dragon.rb"
+
 MID_Y = 350
 MID_X = 650
-SCALER = 3
 
 def tick(args)
   args.state.x ||= 0
   args.state.y ||= 0
 
-  args.state.y += args.inputs.up_down
-  args.state.x += args.inputs.left_right
+  args.state.dragon ||= Dragon.new(x: MID_X, y: MID_Y)
 
-  label_args = [MID_X + args.state.x, MID_Y + args.state.y, "Hi"]
-  label_args << 20
-  label_args << 1
+  args.state.dragon.move(args.inputs)
+
+  label_args = [MID_X, MID_Y, "Demo", 20, 1]
 
   args.outputs.labels  << label_args
-  args.outputs.sprites << [576, 280, 128*SCALER, 101*SCALER, 'dragonruby.png']
+  args.outputs.sprites << args.state.dragon
 end
